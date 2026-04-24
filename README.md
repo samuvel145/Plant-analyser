@@ -30,12 +30,14 @@ Built with a conversational interface, users can simply upload a photo of a leaf
 - **Google Gemini API Key** (Get one from Google AI Studio)
 
 ### 2. Backend Setup
-Navigate to the backend directory and install dependencies:
+Open your terminal at the root of the project and navigate into the backend folder:
 ```bash
 cd backend
+```
+Install the Python dependencies:
+```bash
 pip install -r requirements.txt
 ```
-
 Create a `.env` file in the `backend/` directory with your configuration:
 ```env
 # Gemini API
@@ -58,20 +60,21 @@ ALLOWED_ORIGINS=http://localhost:5173,http://localhost:3000
 DEBUG=true
 LOG_LEVEL=info
 ```
-
-Start the FastAPI server:
+Start the FastAPI server **(Keep this terminal open)**:
 ```bash
 python -m uvicorn main:app --host 0.0.0.0 --port 8000 --reload
 ```
 
 ### 3. Frontend Setup
-Open a new terminal, navigate to the frontend directory, and install dependencies:
+Open a **NEW** terminal at the root of the project and navigate into the frontend folder:
 ```bash
 cd frontend
+```
+Install the Node dependencies:
+```bash
 npm install
 ```
-
-Start the Vite development server:
+Start the Vite development server **(Keep this terminal open)**:
 ```bash
 npm run dev
 ```
