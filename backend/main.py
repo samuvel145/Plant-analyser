@@ -100,14 +100,57 @@ app.include_router(health.router, tags=["Health"])
 
 
 # ─────────────────────────────────────────────
-# Root
+# Static Frontend Serving
 # ─────────────────────────────────────────────
-@app.get("/")
-async def root():
-    """Root endpoint — API info."""
+import os
+from fastapi.staticfiles import StaticFiles
+from fastapi.responses import FileResponse
+
+# Determine path to the frontend dist directory
+frontend_dist = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "frontend", "dist"))
+
+@app.get("/api")
+async def api_root():
+    """API Root endpoint"""
     return {
-        "app": "PlantMD",
+        "app": "PlantMD API",
         "version": "1.0.0",
-        "description": "AI Plant Disease Detection Chat Agent",
-        "docs": "/docs",
+        "status": "active"
     }
+
+if os.path.exists(frontend_dist):
+    logger.info(f"Serving frontend from {frontend_dist}")
+    
+    # Serve assets directory directly
+    assets_path = os.path.join(frontend_dist, "assets")
+    if os.path.exists(assets_path):
+        app.mount("/assets", StaticFiles(directory=assets_path), name="assets")
+        
+    # Catch-all route for SPA and root static files
+    @app.get("/{full_path:path}")
+    async def serve_frontend(full_path: str):
+        # Allow requests to /api to fall through to FastAPI routes (if not already handled)
+        if full_path.startswith("api/"):
+            raise HTTPException(status_code=404, detail="API route not found")
+            
+        file_path = os.path.join(frontend_dist, full_path)
+        
+        # If the file exists in dist (e.g. favicon.svg), serve it directly
+        if full_path and os.path.isfile(file_path):
+            return FileResponse(file_path)
+            
+        # Otherwise, fall back to index.html for React SPA routing
+        index_path = os.path.join(frontend_dist, "index.html")
+        if os.path.isfile(index_path):
+            return FileResponse(index_path)
+            
+        return {"error": "Frontend build not found. Please run 'npm run build' in the frontend directory."}
+else:
+    logger.warning(f"Frontend dist directory not found at {frontend_dist}. API only mode.")
+    
+    @app.get("/")
+    async def root():
+        return {
+            "app": "PlantMD",
+            "message": "API is running, but frontend is not built. Run 'npm run build' in the frontend folder."
+        }

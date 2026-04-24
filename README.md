@@ -41,8 +41,7 @@ pip install -r requirements.txt
 Create a `.env` file in the `backend/` directory with your configuration:
 ```env
 # Gemini API
-GEMINI_API_KEY=your_primary_api_key_here
-GEMINI_API_KEY_FALLBACK=your_secondary_api_key_here_if_needed
+GEMINI_API_KEY=your_api_key_here
 
 # Session Configuration
 SESSION_TTL_MINUTES=30
@@ -61,24 +60,40 @@ ALLOWED_ORIGINS=http://localhost:5173,http://localhost:3000
 DEBUG=true
 LOG_LEVEL=info
 ```
-Start the FastAPI server **(Keep this terminal open)**:
-```bash
-python -m uvicorn main:app --host 0.0.0.0 --port 8000 --reload
-```
+### 🏃‍♂️ Running the Application Locally (Unified Server)
 
-### 3. Frontend Setup
-Open a **NEW** terminal at the root of the project and navigate into the frontend folder:
+You no longer need to run the frontend and backend in two separate terminals. I have unified the system so that FastAPI natively serves the compiled React application.
+
+**For Windows Users:**
+Just double-click the `start.bat` file in the project root! It will automatically:
+1. Build your Vite frontend.
+2. Install any missing Python dependencies.
+3. Start the unified FastAPI server.
+
+Then open your browser to: [http://127.0.0.1:8000](http://127.0.0.1:8000)
+
+**Manual Execution (Mac/Linux):**
 ```bash
+# 1. Build the frontend
 cd frontend
-```
-Install the Node dependencies:
-```bash
-npm install
-```
-Start the Vite development server **(Keep this terminal open)**:
-```bash
-npm run dev
+npm install && npm run build
+
+# 2. Run the unified backend server
+cd ../backend
+python -m uvicorn main:app --host 127.0.0.1 --port 8000
 ```
 
-### 4. Access the App
-Open your browser and navigate to: **http://localhost:5173/**
+
+---
+
+### 🌐 Deployment (Vercel)
+
+This repository is pre-configured with a highly stable `vercel.json` file. Vercel naturally excels at running "both at the same time" natively:
+- It pushes the compiled React Frontend to its global Edge CDN for lightning-fast speeds.
+- It deploys the FastAPI Backend as AWS Serverless Functions mapped to the `/api` route.
+
+**To deploy:**
+1. Import your GitHub repository to [Vercel](https://vercel.com/).
+2. Vercel will auto-detect the configuration.
+3. **Important:** Go to your Vercel Project Settings > Environment Variables, and securely add your `GEMINI_API_KEY` and `GEMINI_API_KEY_FALLBACK`.
+4. Hit **Deploy**!
