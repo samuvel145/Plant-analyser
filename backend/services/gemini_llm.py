@@ -93,7 +93,9 @@ async def chat_followup(
     try:
         logger.info(f"Sending follow-up chat to Gemini LLM ({len(contents)} messages)")
 
-        response = model.generate_content(
+        from utils.gemini_client import execute_with_fallback
+        response = execute_with_fallback(
+            model.generate_content,
             contents,
             request_options={"timeout": 20}
         )

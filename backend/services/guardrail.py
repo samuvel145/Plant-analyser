@@ -46,7 +46,9 @@ async def is_allowed_topic(user_message: str) -> bool:
     prompt = GUARDRAIL_PROMPT.format(user_message=user_message)
 
     try:
-        response = model.generate_content(
+        from utils.gemini_client import execute_with_fallback
+        response = execute_with_fallback(
+            model.generate_content,
             prompt,
             request_options={"timeout": 10}
         )

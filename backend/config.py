@@ -10,6 +10,7 @@ from typing import List
 class Settings(BaseSettings):
     # Gemini API
     GEMINI_API_KEY: str = "your_gemini_api_key_here"
+    GEMINI_API_KEY_FALLBACK: str | None = None
 
     # Session Configuration
     SESSION_TTL_MINUTES: int = 30

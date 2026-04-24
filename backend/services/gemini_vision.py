@@ -67,8 +67,10 @@ async def analyse_plant_image(
     try:
         logger.info("Sending image to Gemini Vision API for analysis...")
 
-        # Generate content with image + prompt
-        response = model.generate_content(
+        # Generate content with image + prompt and fallback support
+        from utils.gemini_client import execute_with_fallback
+        response = execute_with_fallback(
+            model.generate_content,
             [prompt, image_part],
             request_options={"timeout": 30}
         )

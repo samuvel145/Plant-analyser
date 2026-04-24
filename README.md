@@ -41,7 +41,8 @@ pip install -r requirements.txt
 Create a `.env` file in the `backend/` directory with your configuration:
 ```env
 # Gemini API
-GEMINI_API_KEY=your_api_key_here
+GEMINI_API_KEY=your_primary_api_key_here
+GEMINI_API_KEY_FALLBACK=your_secondary_api_key_here_if_needed
 
 # Session Configuration
 SESSION_TTL_MINUTES=30
