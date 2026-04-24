@@ -80,7 +80,7 @@ async def chat(request: ChatRequest):
         logger.error(f"Gemini LLM error: {str(e)}")
         raise HTTPException(
             status_code=500,
-            detail=f"DEBUG ERROR: {str(e)} | Type: {type(e).__name__}"
+            detail="An error occurred while generating a response. Please try again."
         )
 
     # Add AI response to history
