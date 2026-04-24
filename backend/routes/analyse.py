@@ -80,7 +80,7 @@ async def analyse_image(
         logger.error(f"Gemini Vision API error: {str(e)}")
         raise HTTPException(
             status_code=500,
-            detail="An error occurred during image analysis. Please try again."
+            detail=f"DEBUG ERROR: {str(e)} | Type: {type(e).__name__}"
         )
 
     # Handle non-plant image
