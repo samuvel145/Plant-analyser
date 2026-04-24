@@ -19,6 +19,7 @@ router = APIRouter()
 
 
 @router.post("/api/analyse")
+@router.post("/analyse")
 async def analyse_image(
     image: UploadFile = File(..., description="Plant/leaf image (JPEG, PNG, WEBP)"),
     session_id: str = Form(..., description="UUID v4 session identifier"),

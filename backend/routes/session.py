@@ -14,6 +14,7 @@ router = APIRouter()
 
 
 @router.delete("/api/session/{session_id}")
+@router.delete("/session/{session_id}")
 async def reset_session(session_id: str):
     """
     Clear/reset a session from memory.

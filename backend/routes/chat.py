@@ -19,6 +19,7 @@ router = APIRouter()
 
 
 @router.post("/api/chat")
+@router.post("/chat")
 async def chat(request: ChatRequest):
     """
     Send a follow-up text message in an existing session.
